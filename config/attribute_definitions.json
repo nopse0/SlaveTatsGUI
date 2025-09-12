@@ -1,0 +1,64 @@
+{
+	"area": {
+		"name": "area",
+		"type": "j_string",
+		"range": "unconstrained",
+		"editable": false
+	},
+	"color": {
+		"name": "color",
+		"type": "j_int",
+		"range": "rgb",
+		"editable": true
+	},
+	"credit": {
+		"name": "credit",
+		"type": "j_string",
+		"range": "unconstrained",
+		"editable": true
+	},
+	"gloss": {
+		"name": "gloss",
+		"type": "j_int",
+		"range": "boolean",
+		"editable": true
+	},
+	"glow": {
+		"name": "glow",
+		"type": "j_int",
+		"range": "rgb",
+		"editable": true
+	},
+	"invertedalpha": {
+		"name": "invertedalpha",
+		"type": "j_float",
+		"range": "between_0_and_1",
+		"editable": true
+	},
+	"name": {
+		"name": "name",
+		"type": "j_string",
+		"range": "unconstrained",
+		"editable": false
+	},
+	"section": {
+		"name": "section",
+		"type": "j_string",
+		"range": "unconstrained",
+		"editable": false
+	},
+	"slot": {
+		"name": "slot",
+		"type": "j_int",
+		"range": "unconstrained",
+		"editable": false
+	},
+	"texture": {
+		"name": "texture",
+		"type": "j_string",
+		"range": "texture_name",
+		"editable": true
+	}
+
+
+}

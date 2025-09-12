@@ -1,0 +1,26 @@
+{
+    "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg/master/scripts/vcpkg.schema.json",
+    "name": "slavetats-gui",
+    "version-string": "0.0.1",
+    "port-version": 0,
+    "description": "SlaveTats GUI.",
+    "homepage": "https://www.loverslab.com/files/file/35989-slavetatsng/",
+    "license": "Apache-2.0",
+    "features": {
+        "plugin": {
+            "description": "Build the SKSE plugin.",
+          "dependencies": [
+            "commonlibsse-ng",
+            "fmt",
+            "spdlog",
+            "clib-util",
+            "nlohmann-json",
+            "hash-library",
+            "magic-enum"
+          ]
+        }
+    },
+    "default-features": [
+        "plugin"
+    ]
+}
