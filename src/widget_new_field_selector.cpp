@@ -19,7 +19,7 @@ namespace slavetats_ui
             const char* combo_preview_value = selected_field.name.c_str();
             ImVec2 vec = ImGui::GetContentRegionAvail();
             ImGui::SetNextItemWidth(vec.x * 0.3);
-            if (ImGui::BeginCombo("new field", combo_preview_value, ImGuiComboFlags_PopupAlignLeft)) {
+            if (ImGui::BeginCombo("new field", combo_preview_value, ImGuiComboFlags_PopupAlignLeft | ImGuiComboFlags_WidthFitPreview | ImGuiComboFlags_HeightLarge)) {
                 for (auto& fd: field_defs)
                 {
                     const bool is_selected = (fd.second.name == selected_field.name);

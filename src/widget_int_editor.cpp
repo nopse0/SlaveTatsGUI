@@ -1,17 +1,14 @@
 #include <imgui.h>
 #include "widget_int_editor.h"
+#include "jcontainers_wrapper.h"
+#include "imgui_utils.h"
 
 namespace slavetats_ui
 {
+    using namespace slavetats_ng::jcwrapper;
 
-    void widget_int_editor::render(int current_value, const std::string& actor_label, const int tattoo_id, const std::string& field_key)
+    void widget_int_editor::render(int current_value, const std::string& actor_label, const int tattoo_id, const std::string& field_key, bool is_new)
     {
-        std::stringstream ss;
-        ss << "actor: " << actor_label << ", tattoo_id: " << tattoo_id << std::endl << "field: " << field_key <<
-            ", current value: " << current_value << "(hex: " << std::format("{:08x}", current_value) << "), type: int";
-        std::string save_description = ss.str();
-        ImGui::TextUnformatted(save_description.c_str());
-
         if (current_value != _int_old) {
             _int_old = current_value;
             _int_new = current_value;
@@ -76,21 +73,117 @@ namespace slavetats_ui
         // Save dialog
 
         if (ImGui::Button("Save")) {
-            logger::info("Save Button was pressed");
-            ImGui::OpenPopup("Save int attribute");
+            //logger::info("Save button was pressed");
+            if (!is_new)
+                ImGui::OpenPopup("Change field value");
+            else
+                ImGui::OpenPopup("Insert new key/value pair");
+        }
+        if (!is_new) {
+            ImGui::SameLine();
+            if (ImGui::Button("Remove")) {
+                ImGui::OpenPopup("Remove field");
+            }
         }
 
         ImVec2 center = ImGui::GetMainViewport()->GetCenter();
         ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2{ 0.5f, 0.5f });
 
-        if (ImGui::BeginPopupModal("Save int attribute", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+        if (ImGui::BeginPopupModal("Change field value", NULL, ImGuiWindowFlags_AlwaysAutoResize))
         {
-            ImGui::Text(save_description.c_str());
-            ImGui::Text("New value %d (hex: %x)", _int_new, _int_new);
-            ImGui::Separator();
-            if (ImGui::Button("OK", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
-            ImGui::SetItemDefaultFocus();
+            std::string text(std::format(
+                "Change value of field {} in tattoo with id {} ?\n"
+                "Target actor is {}\n"
+                "Old value: {} (hex: {:08x})\n"
+                "New value: {} (hex: {:08x})\n",
+                field_key, tattoo_id, actor_label, _int_old, _int_old, _int_new, _int_new));
+            ImGui::Text(text.c_str());
+
+            bool confirmed = false;
+            if (ImGui::Button("OK", ImVec2(120, 0))) {
+                JMap::setInt(tattoo_id, field_key, _int_new);
+                // Check if this was successful
+                bool result = JMap::hasKey(tattoo_id, field_key) && JMap::getInt(tattoo_id, field_key) == _int_new;
+                if (result)
+                    ImGui::OpenPopup("Success");
+                else
+                    ImGui::OpenPopup("Error");
+            }
+            // ------- Confirmation popups -----------------
+            bool success_shown = true;
+            bool error_shown = true;
+            show_confirmation_popups(&confirmed, &success_shown, &error_shown);
+            if (confirmed) {
+                ImGui::CloseCurrentPopup();
+            }
+
             ImGui::SameLine();
+            ImGui::SetItemDefaultFocus();
+            if (ImGui::Button("Cancel", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
+            ImGui::EndPopup();
+        }
+        if (ImGui::BeginPopupModal("Insert new key/value pair", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+        {
+            std::string text(std::format(
+                "Insert new field {} into tattoo with id {} ?\n"
+                "Target actor is {}\n"
+                "Value of new field: {} (hex: {:08x})\n",
+                field_key, tattoo_id, actor_label, _int_new, _int_new));
+            ImGui::Text(text.c_str());
+
+            bool confirmed = false;
+            if (ImGui::Button("OK", ImVec2(120, 0))) {
+                JMap::setInt(tattoo_id, field_key, _int_new);
+                // Check if this was successful
+                bool result = JMap::hasKey(tattoo_id, field_key) && JMap::getInt(tattoo_id, field_key) == _int_new;
+                if (result)
+                    ImGui::OpenPopup("Success");
+                else
+                    ImGui::OpenPopup("Error");
+            }
+            // ------- Confirmation popups -----------------
+            bool success_shown = true;
+            bool error_shown = true;
+            show_confirmation_popups(&confirmed, &success_shown, &error_shown);
+            if (confirmed) {
+                ImGui::CloseCurrentPopup();
+            }
+
+            ImGui::SameLine();
+            ImGui::SetItemDefaultFocus();
+            if (ImGui::Button("Cancel", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
+            ImGui::EndPopup();
+        }
+
+        if (ImGui::BeginPopupModal("Remove field", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+        {
+            std::string text(std::format(
+                "Remove field {} from tattoo with id {} ?\n"
+                "Target actor is {}\n"
+                "Current field value is: {} (hex: {:08x})\n",
+                field_key, tattoo_id, actor_label, _int_old, _int_old));
+            ImGui::Text(text.c_str());
+
+            bool confirmed = false;
+            if (ImGui::Button("OK", ImVec2(120, 0))) {
+                JMap::removeKey(tattoo_id, field_key);
+                // Check if this was successful
+                bool result = JMap::hasKey(tattoo_id, field_key);
+                if (result)
+                    ImGui::OpenPopup("Success");
+                else
+                    ImGui::OpenPopup("Error");
+            }
+            // ------- Confirmation popups -----------------
+            bool success_shown = true;
+            bool error_shown = true;
+            show_confirmation_popups(&confirmed, &success_shown, &error_shown);
+            if (confirmed) {
+                ImGui::CloseCurrentPopup();
+            }
+
+            ImGui::SameLine();
+            ImGui::SetItemDefaultFocus();
             if (ImGui::Button("Cancel", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
             ImGui::EndPopup();
         }

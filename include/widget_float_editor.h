@@ -34,7 +34,7 @@ namespace slavetats_ui
 	public:
 
 
-		void render(float current_value, const std::string& actor_label, const int tattoo_id, const std::string& field_key);
+		void render(float current_value, const std::string& actor_label, const int tattoo_id, const std::string& field_key, bool is_new);
 	};
 
 

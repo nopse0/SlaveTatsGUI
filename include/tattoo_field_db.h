@@ -5,27 +5,6 @@ namespace slavetats_ui {
 
     namespace field_db {
 
-        // using attribute_variant = std::variant<int, float, std::string>;
-
-        /*
-        enum class attribute_name {
-            _undefined = -1,
-            area,
-            section,
-            name
-        };
-        */
-
-        /*
-        enum class attribute_type {
-            _undefined = -1,
-            j_none = 0,
-            j_int = 2,
-            j_float = 3,
-            j_string = 6
-        };
-        */
-
         enum class value_range {
             unconstrained,
             rgb,

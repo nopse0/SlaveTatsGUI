@@ -10,7 +10,7 @@
 #include "widget_int_editor.h"
 #include "widget_float_editor.h"
 #include "widget_string_editor.h"
-#include "tattoo_field_definitions.h"
+#include "tattoo_field_db.h"
 #include "widget_new_field_selector.h"
 
 namespace slavetats_ui
@@ -35,8 +35,6 @@ namespace slavetats_ui
 
         static widget_area_selector area_selector;
         area_selector.render();
-
-        ImGui::SameLine();
 
         jactor_tattoos_t jtattoos;
         jread_actor_tattoos(actor_selector.actor, jtattoos);
@@ -64,17 +62,17 @@ namespace slavetats_ui
                     if (jvalue.type == jvalue_type::j_int) {
                         int i = std::get<int>(jvalue.value);
                         static slavetats_ui::widget_int_editor int_editor;
-                        int_editor.render(i, actor_selector.actor_label, slot_selector.slot_info.tattoo_id, field_selector.selected_field);
+                        int_editor.render(i, actor_selector.actor_label, slot_selector.slot_info.tattoo_id, field_selector.selected_field, false);
                     }
                     else if (jvalue.type == jvalue_type::j_float) {
                         float f = std::get<float>(jvalue.value);
                         static slavetats_ui::widget_float_editor float_editor;
-                        float_editor.render(f, actor_selector.actor_label, slot_selector.slot_info.tattoo_id, field_selector.selected_field);
+                        float_editor.render(f, actor_selector.actor_label, slot_selector.slot_info.tattoo_id, field_selector.selected_field, false);
                     }
                     else if (jvalue.type == jvalue_type::j_string) {
                         std::string s(std::get<std::string>(jvalue.value));
                         static slavetats_ui::widget_string_editor string_editor;
-                        string_editor.render(s, actor_selector.actor_label, slot_selector.slot_info.tattoo_id, field_selector.selected_field);
+                        string_editor.render(s, actor_selector.actor_label, slot_selector.slot_info.tattoo_id, field_selector.selected_field, false);
                     }
                 }
             }
@@ -91,15 +89,15 @@ namespace slavetats_ui
                     auto& field = new_field_selector.selected_field;
                     if (field.type == jvalue_type::j_int) {
                         static slavetats_ui::widget_int_editor int_editor;
-                        int_editor.render(0, actor_selector.actor_label, slot_selector.slot_info.tattoo_id, field.name);
+                        int_editor.render(0, actor_selector.actor_label, slot_selector.slot_info.tattoo_id, field.name, true);
                     }
                     else if (field.type == jvalue_type::j_float) {
                         static slavetats_ui::widget_float_editor float_editor;
-                        float_editor.render(0.f, actor_selector.actor_label, slot_selector.slot_info.tattoo_id, field.name);
+                        float_editor.render(0.f, actor_selector.actor_label, slot_selector.slot_info.tattoo_id, field.name, true);
                     }
                     else if (field.type == jvalue_type::j_string) {
                         static slavetats_ui::widget_string_editor string_editor;
-                        string_editor.render("", actor_selector.actor_label, slot_selector.slot_info.tattoo_id, field.name);
+                        string_editor.render("", actor_selector.actor_label, slot_selector.slot_info.tattoo_id, field.name, true);
                     }
                 }
 

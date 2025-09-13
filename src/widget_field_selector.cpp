@@ -1,7 +1,7 @@
 #include "widget_field_selector.h"
 #include "imgui.h"
 #include "slavetats_util.h"
-#include "tattoo_field_definitions.h"
+#include "tattoo_field_db.h"
 
 namespace slavetats_ui
 {
@@ -9,8 +9,8 @@ namespace slavetats_ui
 		ImGui::PushID(this);
 		
         if (ImGui::BeginTable("attributes", 3, flags)) {
-            ImGui::TableSetupColumn("key");
-            ImGui::TableSetupColumn("type");
+            ImGui::TableSetupColumn("key", ImGuiTableColumnFlags_WidthFixed);
+            ImGui::TableSetupColumn("type", ImGuiTableColumnFlags_WidthFixed);
             ImGui::TableSetupColumn("value");
             ImGui::TableHeadersRow();
             for (auto kvit = jfields.begin(); kvit != jfields.end(); ++kvit) {

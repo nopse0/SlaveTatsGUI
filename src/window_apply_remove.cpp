@@ -4,17 +4,17 @@
 #include "widget_slot_selector.h"
 #include "widget_cached_tattoo_selector.h"
 #include "slavetats_util.h"
+#include "slavetatsng_wrapper.h"
 #include "imgui.h"
-
+#include "imgui_utils.h"
 
 namespace slavetats_ui
 {
-
 	void window_apply_remove::render(bool* window_shown) {
 
-        std::thread t1
-        {
-            [&] {
+        //std::thread t1
+        //{
+        //    [&] {
 
 		if (!ImGui::Begin("[SlaveTats] Apply/Remove Tattoo", window_shown)) {
 			ImGui::End();
@@ -76,6 +76,12 @@ namespace slavetats_ui
 			cache_selector.reset();
 		}
 
+		ImGui::SameLine();
+		if (ImGui::Button("Synchronize visuals")) {
+			if (actor)
+				slavetats::synchronize_tattoos(actor);
+		}
+
 		ImGui::Separator();
 
 
@@ -122,31 +128,191 @@ namespace slavetats_ui
 				if (cache_selector.tattoo_selected != 0) {
 					if (ImGui::Button("Apply new tattoo")) {
 						logger::info("'Apply new tattoo' was pressed");
+						ImGui::OpenPopup("Apply new tattoo");
 					}
 				}
 			}
 			else {
 				if (slot.value().tattoo_id != 0) {
-					if (ImGui::Button("Remove existing tattoo")) {
-						logger::info("'Remove existing tattoo' was pressed");
-						//ImGui::OpenPopup("Save string attribute");
+					if (ImGui::Button("Remove tattoo")) {
+						logger::info("'Remove tattoo' was pressed");
+						ImGui::OpenPopup("Remove tattoo");
 					}
 				}
-				if (cache_selector.tattoo_selected != 0) {
-					if (slot.value().tattoo_id != 0)
-						ImGui::SameLine();
-					if (ImGui::Button("Replace existing tattoo")) {
-						logger::info("'Replace existing tattoo' was pressed");
+				if (cache_selector.tattoo_selected != 0 && slot.value().tattoo_id != 0) {
+					ImGui::SameLine();
+					if (slot.value().name == cache_selector.name_selected && slot.value().section == cache_selector.section_selected) {
+						if (ImGui::Button("Re-apply tattoo (reset attributes)")) {
+							logger::info("'Re-apply tattoo' was pressed");
+							ImGui::OpenPopup("Re-apply tattoo");
+						}
+					}
+					else {
+						if (ImGui::Button("Replace tattoo")) {
+							logger::info("'Replace tattoo' was pressed");
+							ImGui::OpenPopup("Replace tattoo");
+						}
 					}
 				}
 			}
 		}
 
+		// ----- Popups -------------------
+
+		if (ImGui::BeginPopupModal("Apply new tattoo", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+		{
+			if (slot.has_value()) {
+				std::string text(std::format(
+					"Apply new tattoo in {}[{}] ?\n"
+					"new tattoo will be: section = '{}', name = '{}'",
+					magic_enum::enum_name(area), slot.value().slot_num,
+					cache_selector.section_selected, cache_selector.name_selected
+				));
+				ImGui::Text(text.c_str());
+
+				bool confirmed = false;
+				if (ImGui::Button("OK", ImVec2(120, 0))) {
+					int new_tattoo = slavetats::add_and_get_tattoo(actor, cache_selector.tattoo_selected, slot.value().slot_num);
+					if (new_tattoo)
+						ImGui::OpenPopup("Success");
+					else
+						ImGui::OpenPopup("Error");
+				}
+				// ------- Confirmation popups -----------------
+				bool success_shown = true;
+				bool error_shown = true;
+				show_confirmation_popups(&confirmed, &success_shown, &error_shown);
+				if (confirmed) {
+					ImGui::CloseCurrentPopup();
+				}
+
+				ImGui::SameLine();
+				ImGui::SetItemDefaultFocus();
+				if (ImGui::Button("Cancel", ImVec2(120, 0))) {
+					ImGui::CloseCurrentPopup();
+				}
+			}
+			ImGui::EndPopup();
+		}
+
+		if (ImGui::BeginPopupModal("Remove tattoo", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+		{
+			if (slot.has_value()) {
+				std::string text(std::format(
+					"Remove tattoo in {}[{}] ?\n"
+					"Currently applied tattoo is: section = '{}', name = '{}' ?", 
+					magic_enum::enum_name(area), slot.value().slot_num, slot.value().section, slot.value().name));
+				ImGui::Text(text.c_str());
+
+				bool confirmed = false;
+				if (ImGui::Button("OK", ImVec2(120, 0))) {
+					bool error = slavetats::remove_tattoo_from_slot(actor, magic_enum::enum_name(area), slot.value().slot_num);
+					if (!error)
+						ImGui::OpenPopup("Success");
+					else
+						ImGui::OpenPopup("Error");
+				}
+				// ------- Confirmation popups -----------------
+				bool success_shown = true;
+				bool error_shown = true;
+				show_confirmation_popups(&confirmed, &success_shown, &error_shown);
+				if (confirmed) {
+					ImGui::CloseCurrentPopup();
+				}
+
+				ImGui::SameLine();
+				ImGui::SetItemDefaultFocus();
+				if (ImGui::Button("Cancel", ImVec2(120, 0))) { 
+					ImGui::CloseCurrentPopup();
+				}
+			}
+			ImGui::EndPopup();
+		}
+
+		if (ImGui::BeginPopupModal("Re-apply tattoo", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+		{
+			if (slot.has_value()) {
+				std::string text(std::format(
+					"Re-apply tattoo in {}[{}] ?\n" 
+					"Tattoo is: section = '{}', name = '{}' ? \n"
+					"This will reset the tattoo attributes to their defaults.", 
+					magic_enum::enum_name(area), slot.value().slot_num, slot.value().section, slot.value().name));
+				ImGui::Text(text.c_str());
+
+				bool confirmed = false;
+				if (ImGui::Button("OK", ImVec2(120, 0))) {
+					int new_tattoo = slavetats::add_and_get_tattoo(actor, cache_selector.tattoo_selected, slot.value().slot_num);
+					if (new_tattoo)
+						ImGui::OpenPopup("Success");
+					else
+						ImGui::OpenPopup("Error");
+				}
+				// ------- Confirmation popups -----------------
+				bool success_shown = true;
+				bool error_shown = true;
+				show_confirmation_popups(&confirmed, &success_shown, &error_shown);
+				if (confirmed) {
+					ImGui::CloseCurrentPopup();
+				}
+
+				ImGui::SameLine();
+				ImGui::SetItemDefaultFocus();
+				if (ImGui::Button("Cancel", ImVec2(120, 0))) {
+					ImGui::CloseCurrentPopup();
+				}
+			}
+			ImGui::EndPopup();
+		}
+
+		if (ImGui::BeginPopupModal("Replace tattoo", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+		{
+			if (slot.has_value()) {
+				std::string text(std::format(
+					"Replace tattoo in {}[{}] ?\n"
+					"current tattoo is: section = '{}', name = '{}'\n"
+					"new tattoo will be: section = '{}', name = '{}'",
+					magic_enum::enum_name(area), slot.value().slot_num,
+					slot.value().section, slot.value().name,
+					cache_selector.section_selected, cache_selector.name_selected
+					));
+				ImGui::Text(text.c_str());
+
+				bool confirmed = false;
+				if (ImGui::Button("OK", ImVec2(120, 0))) {
+					int new_tattoo = 0;
+					if (!slavetats::tattoo_matches(cache_selector.tattoo_selected, slot.value().tattoo_id)) {
+						new_tattoo = slavetats::add_and_get_tattoo(actor, cache_selector.tattoo_selected, slot.value().slot_num);
+					}
+					if (new_tattoo)
+						ImGui::OpenPopup("Success");
+					else
+						ImGui::OpenPopup("Error");
+				}
+				// ------- Confirmation popups -----------------
+				bool success_shown = true;
+				bool error_shown = true;
+				show_confirmation_popups(&confirmed, &success_shown, &error_shown);
+				if (confirmed) {
+					ImGui::CloseCurrentPopup();
+				}
+				
+				ImGui::SameLine();
+				ImGui::SetItemDefaultFocus();
+				if (ImGui::Button("Cancel", ImVec2(120, 0))) {
+					ImGui::CloseCurrentPopup();
+				}
+			}
+			ImGui::EndPopup();
+		}
+
+
+
+
 		ImGui::End();
 
-			}
-		};
-		t1.join();
+		//	}
+		//};
+		//t1.join();
 	}
 
 }

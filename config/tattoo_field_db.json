@@ -1,0 +1,168 @@
+{
+	"area": {
+		"name": "area",
+		"type": "j_string",
+		"range": "unconstrained",
+		"editable": false
+	},
+	"color": {
+		"name": "color",
+		"type": "j_int",
+		"range": "rgb",
+		"editable": true
+	},
+	"credit": {
+		"name": "credit",
+		"type": "j_string",
+		"range": "unconstrained",
+		"editable": true
+	},
+	"excluded_by": {
+		"name": "excluded_by",
+		"type": "j_string",
+		"range": "unconstrained",
+		"editable": true
+	},
+	"gloss": {
+		"name": "gloss",
+		"type": "j_int",
+		"range": "boolean",
+		"editable": true
+	},
+	"glow": {
+		"name": "glow",
+		"type": "j_int",
+		"range": "rgb",
+		"editable": true
+	},
+	"invertedalpha": {
+		"name": "invertedalpha",
+		"type": "j_float",
+		"range": "between_0_and_1",
+		"editable": true
+	},
+	"name": {
+		"name": "name",
+		"type": "j_string",
+		"range": "unconstrained",
+		"editable": false
+	},
+	"requires": {
+		"name": "requires",
+		"type": "j_string",
+		"range": "unconstrained",
+		"editable": true
+	},
+	"section": {
+		"name": "section",
+		"type": "j_string",
+		"range": "unconstrained",
+		"editable": false
+	},
+	"slot": {
+		"name": "slot",
+		"type": "j_int",
+		"range": "unconstrained",
+		"editable": false
+	},
+	"spell_formid": {
+		"name": "spell_formid",
+		"type": "j_int",
+		"range": "unconstrained",
+		"editable": true
+	},
+	"spell_plugin": {
+		"name": "spell_plugin",
+		"type": "j_string",
+		"range": "unconstrained",
+		"editable": true
+	},
+	"texture": {
+		"name": "texture",
+		"type": "j_string",
+		"range": "texture_name",
+		"editable": false
+	},
+
+
+	"dibellan_armor": {
+		"name": "dibellan_armor",
+		"type": "j_int",
+		"range": "unconstrained",
+		"editable": true
+	},
+	"dibellan_armory": {
+		"name": "dibellan_armory",
+		"type": "j_int",
+		"range": "unconstrained",
+		"editable": true
+	},
+	"dibellan_bow": {
+		"name": "dibellan_bow",
+		"type": "j_int",
+		"range": "unconstrained",
+		"editable": true
+	},
+	"dibellan_buff": {
+		"name": "dibellan_buff",
+		"type": "j_int",
+		"range": "unconstrained",
+		"editable": true
+	},
+	"dibellan_dexter": {
+		"name": "dibellan_dexter",
+		"type": "j_int",
+		"range": "unconstrained",
+		"editable": true
+	},
+	"dibellan_eye": {
+		"name": "dibellan_eye",
+		"type": "j_int",
+		"range": "unconstrained",
+		"editable": true
+	},
+	"dibellan_calling": {
+		"name": "dibellan_calling",
+		"type": "j_int",
+		"range": "unconstrained",
+		"editable": true
+	},
+	"dibellan_heresy": {
+		"name": "dibellan_heresy",
+		"type": "j_int",
+		"range": "unconstrained",
+		"editable": true
+	},
+	"dibellan_resist": {
+		"name": "dibellan_resist",
+		"type": "j_int",
+		"range": "unconstrained",
+		"editable": true
+	},
+	"dibellan_sinister": {
+		"name": "dibellan_sinister",
+		"type": "j_int",
+		"range": "unconstrained",
+		"editable": true
+	},
+	"dibellan_skinmagic": {
+		"name": "dibellan_skinmagic",
+		"type": "j_int",
+		"range": "unconstrained",
+		"editable": true
+	},
+	"dibellan_style": {
+		"name": "dibellan_style",
+		"type": "j_int",
+		"range": "unconstrained",
+		"editable": true
+	},
+	"dibellan_tattoo": {
+		"name": "dibellan_tattoo",
+		"type": "j_int",
+		"range": "unconstrained",
+		"editable": true
+	}
+
+
+}

@@ -1,5 +1,5 @@
 #pragma once
-#include "tattoo_field_definitions.h"
+#include "tattoo_field_db.h"
 
 namespace slavetats_ui
 {

@@ -46,7 +46,7 @@ set(headers ${headers} ${headers_extern}
     include/JContainers/jc_interface.h
     include/JContainers/jcontainers_constants.h
     include/slavetatsng_wrapper.h
-    include/tattoo_field_definitions.h
+    include/tattoo_field_db.h
 	include/UI.h
     include/slavetats_util.h
     include/widget_actor_selector.h
@@ -63,11 +63,12 @@ set(headers ${headers} ${headers_extern}
     include/widget_override_list.h
     include/widget_cached_tattoo_selector.h
     include/window_apply_remove.h
+    include/imgui_utils.h
 	src/PCH.h
 )
 
 set(sources ${sources}
-    src/tattoo_field_definitions.cpp
+    src/tattoo_field_db.cpp
 	src/main.cpp
     src/slavetats_util.cpp
     src/widget_actor_selector.cpp
@@ -84,6 +85,7 @@ set(sources ${sources}
     src/widget_override_list.cpp
     src/widget_cached_tattoo_selector.cpp
     src/window_apply_remove.cpp
+    src/imgui_utils.cpp
 	src/UI.cpp
 )
 

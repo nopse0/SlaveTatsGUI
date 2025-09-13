@@ -1,7 +1,6 @@
 #include "utility.h"
 #include <hash-library/md5.h>
 #include "jcontainers_wrapper.h"
-#include "tattoo_field_definitions.h"
 
 namespace slavetats_ng
 {

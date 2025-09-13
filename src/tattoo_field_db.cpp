@@ -1,4 +1,4 @@
-#include "tattoo_field_definitions.h"
+#include "tattoo_field_db.h"
 #include <nlohmann/json.hpp>
 
 namespace slavetats_ui {
@@ -38,7 +38,7 @@ namespace slavetats_ui {
         {
             // I/O and Json deserialization can throw
             try {
-                std::ifstream ifs("data/skse/plugins/SlaveTatsNG/attribute_definitions.json");
+                std::ifstream ifs("data/skse/plugins/SlaveTatsNG/tattoo_field_db.json");
                 json          jf = json::parse(ifs);
                 field_db = jf.template get<field_db_t>();
             }
