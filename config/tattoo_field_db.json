@@ -5,6 +5,12 @@
 		"range": "unconstrained",
 		"editable": false
 	},
+	"bump": {
+		"name": "bump",
+		"type": "j_string",
+		"range": "texture_name",
+		"editable": true
+	},
 	"color": {
 		"name": "color",
 		"type": "j_int",
@@ -33,6 +39,12 @@
 		"name": "glow",
 		"type": "j_int",
 		"range": "rgb",
+		"editable": true
+	},
+	"in_bsa": {
+		"name": "in_bsa",
+		"type": "j_int",
+		"range": "boolean",
 		"editable": true
 	},
 	"invertedalpha": {

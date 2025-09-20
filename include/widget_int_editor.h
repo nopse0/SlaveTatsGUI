@@ -1,6 +1,7 @@
 #pragma once
 
 #include "magic_enum.hpp"
+#include "imgui_utils.h"
 
 namespace slavetats_ui
 {
@@ -20,7 +21,7 @@ namespace slavetats_ui
 		"%x"   // hex_fmt
 	};
 
-	// ColorDialog palette from SkyUI 
+	// ColorDialog palette from SkyUI (ABGR)
 	static inline constexpr std::array skyui_palette = {
 		0x990033, 0xAD0073, 0xA17700, 0x803D0D, 0xBD4F19, 0x007A87, 0x162274, 0x4F2D7F, 0x56364D, 0x618E02, 0x008542, 0x5C4836, 0x999999, 0x000000,
 		0xCC0033, 0xE86BA5, 0xEAAB00, 0xB88454, 0xE37222, 0x99FFFF, 0x4060AF, 0x8C6CD0, 0x8F6678, 0x9EAB05, 0x19B271, 0xAA9C8F, 0xCCCCCC, 0xFFFFFF

@@ -40,17 +40,17 @@ namespace slavetats_ui
         else if (input_method_index != integer_input_method::color_pick_palette) {
             ImGuiColorEditFlags flags = ImGuiColorEditFlags_NoAlpha | ImGuiColorEditFlags_DisplayRGB | ImGuiColorEditFlags_DisplayHSV |
                 ImGuiColorEditFlags_DisplayHex;
-            ImVec4 color = ImGui::ColorConvertU32ToFloat4(_int_new);
+            ImVec4 color = ImGui::ColorConvertU32ToFloat4(ARGBtoABGR(_int_new));
             if (input_method_index == integer_input_method::color_pick_wheel)
                 flags |= ImGuiColorEditFlags_PickerHueWheel;
             else
                 flags |= ImGuiColorEditFlags_PickerHueBar;
             if (ImGui::ColorPicker3("new value (color picker)", (float*)&color, flags)) {
-                _int_new = ImGui::ColorConvertFloat4ToU32(color);
+                _int_new = ABGRtoARGB(ImGui::ColorConvertFloat4ToU32(color));
             }
         }
         else {
-            ImVec4 color = ImGui::ColorConvertU32ToFloat4(_int_new);
+            ImVec4 color = ImGui::ColorConvertU32ToFloat4(ARGBtoABGR(_int_new));
             ImGui::BeginGroup(); // Lock X position
             ImGui::Text("Current");
             ImGui::ColorButton("##color button", color, ImGuiColorEditFlags_NoPicker, ImVec2(60, 40));
@@ -63,7 +63,7 @@ namespace slavetats_ui
                     ImGui::SameLine(0.0f, ImGui::GetStyle().ItemSpacing.y);
                 ImGuiColorEditFlags palette_button_flags = ImGuiColorEditFlags_NoAlpha | ImGuiColorEditFlags_NoPicker | ImGuiColorEditFlags_NoTooltip;
                 if (ImGui::ColorButton("##palette", skyui_palette_vec4[n], palette_button_flags, ImVec2(60, 60))) {
-                    _int_new = skyui_palette[n];
+                    _int_new = ABGRtoARGB(skyui_palette[n]);
                 }
                 ImGui::PopID();
             }

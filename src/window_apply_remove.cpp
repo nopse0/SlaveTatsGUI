@@ -78,9 +78,13 @@ namespace slavetats_ui
 
 		ImGui::SameLine();
 		if (ImGui::Button("Synchronize visuals")) {
-			if (actor)
+			if (actor) {
+				// If manipulating the JContainer data directly, the '.updated' flag must be set before calling 'synchronize_tattoos' !!!
+				JFormDB::setInt(actor, ".SlaveTats.updated", 1);
 				slavetats::synchronize_tattoos(actor);
+			}
 		}
+
 
 		ImGui::Separator();
 

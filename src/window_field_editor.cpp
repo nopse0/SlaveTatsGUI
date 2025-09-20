@@ -12,6 +12,7 @@
 #include "widget_string_editor.h"
 #include "tattoo_field_db.h"
 #include "widget_new_field_selector.h"
+#include "slavetatsng_wrapper.h"
 
 namespace slavetats_ui
 {
@@ -35,6 +36,14 @@ namespace slavetats_ui
 
         static widget_area_selector area_selector;
         area_selector.render();
+
+        if (ImGui::Button("Synchronize visuals")) {
+            if (actor_selector.actor) {
+                // If manipulating the JContainer data directly, the '.updated' flag must be set before calling 'synchronize_tattoos' !!!
+                JFormDB::setInt(actor_selector.actor, ".SlaveTats.updated", 1);
+                slavetats::synchronize_tattoos(actor_selector.actor);
+            }
+        }
 
         jactor_tattoos_t jtattoos;
         jread_actor_tattoos(actor_selector.actor, jtattoos);
