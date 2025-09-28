@@ -1,4 +1,3 @@
-#include "utility.h"
 #include "jcontainers_wrapper.h"
 #include "slavetats_util.h"
 #include "tattoo_field_db.h"
@@ -131,12 +130,6 @@ namespace slavetats_ui {
             return std::string("??? undefined ???");
         }
     }
-
-    //static void jfields_to_strings(const jfields_t& jfields, std::map<std::string, std::string>& sfields) {
-    //    for (auto& kv : jfields) {
-    //        sfields.emplace(kv.first, jvalue_as_string(kv.second));
-    //    }
-    //}
 
     void read_slavetats_cache(area_sections_t& area_sections) {
         int cache = JDB::solveObj(".SlaveTatsNG.cache");

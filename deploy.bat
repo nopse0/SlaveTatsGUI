@@ -1,6 +1,6 @@
 set root="C:\Build\SlaveTatsGUI"
-set dest="F:\Games\Skyrim-1.6.1170"
-rem set dest="D:\Games\Skyrim-1.5.97"
+rem set dest="F:\Games\Skyrim-1.6.1170"
+set dest="D:\Games\Skyrim-1.5.97"
 set configsrc=%root%\config
 rem set pluginsrc=%root%\build\debug-msvc
 set pluginsrc=%root%\build\release-msvc

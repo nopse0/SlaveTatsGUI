@@ -12,7 +12,7 @@
 #include "widget_string_editor.h"
 #include "tattoo_field_db.h"
 #include "widget_new_field_selector.h"
-#include "slavetatsng_wrapper.h"
+#include "slavetatsng_interface.h"
 
 namespace slavetats_ui
 {

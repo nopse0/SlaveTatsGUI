@@ -1,12 +1,21 @@
 cmake_minimum_required(VERSION 3.21)
 message("Using toolchain file ${CMAKE_TOOLCHAIN_FILE}.")
 
+include(FetchContent)
+FetchContent_Declare(
+  slavetatsng_dep
+  GIT_REPOSITORY  https://github.com/nopse0/SlaveTatsNG.git
+  GIT_TAG 7a6f6625f7083eb61a5db32e845cd5363d04c1ab
+  EXCLUDE_FROM_ALL
+)
+#FetchContent_MakeAvailable(slavetatsng_dep)
+
 ########################################################################################################################
 ## Define project
 ########################################################################################################################
 project(
         SlaveTatsGUI
-        VERSION 0.1.1
+        VERSION 0.1.2
         DESCRIPTION "SlaveTats GUI."
         LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 23)
@@ -28,24 +37,35 @@ file(
 	CONFIGURE_DEPENDS
 		"${CMAKE_CURRENT_SOURCE_DIR}/extern/catmenu/*.h"
 		"${CMAKE_CURRENT_SOURCE_DIR}/extern/catmenu/*.hpp"
-		"${CMAKE_CURRENT_SOURCE_DIR}/extern/slavetatsng/include/*.h"
+)     
+
+set(headers_extern ${headers_extern}
+   "${CMAKE_CURRENT_BINARY_DIR}/_deps/slavetatsng_dep-src/include/config.h"
+   "${CMAKE_CURRENT_BINARY_DIR}/_deps/slavetatsng_dep-src/include/jcontainers_wrapper.h"
+   "${CMAKE_CURRENT_BINARY_DIR}/_deps/slavetatsng_dep-src/include/nioverride_impl.h"
+   "${CMAKE_CURRENT_BINARY_DIR}/_deps/slavetatsng_dep-src/include/nioverride_impl_current.h"
+   "${CMAKE_CURRENT_BINARY_DIR}/_deps/slavetatsng_dep-src/include/nioverride_impl_legacy.h"
+   "${CMAKE_CURRENT_BINARY_DIR}/_deps/slavetatsng_dep-src/include/nioverride_wrapper.h"
+   "${CMAKE_CURRENT_BINARY_DIR}/_deps/slavetatsng_dep-src/include/ni_node_override_lock.h"
+   "${CMAKE_CURRENT_BINARY_DIR}/_deps/slavetatsng_dep-src/include/skee_addresses.h"
+   "${CMAKE_CURRENT_BINARY_DIR}/_deps/slavetatsng_dep-src/include/SlaveTatsNG_Interface.h"
+   "${CMAKE_CURRENT_BINARY_DIR}/_deps/slavetatsng_dep-src/include/utility.h"
 )
 
-file(
-	GLOB_RECURSE
-	sources_extern
-	CONFIGURE_DEPENDS
-		"${CMAKE_CURRENT_SOURCE_DIR}/extern/slavetatsng/src/*.cpp"
+set(sources_extern
+    "${CMAKE_CURRENT_BINARY_DIR}/_deps/slavetatsng_dep-src/src/config.cpp"
+    "${CMAKE_CURRENT_BINARY_DIR}/_deps/slavetatsng_dep-src/src/jcontainers_wrapper.cpp"
+    "${CMAKE_CURRENT_BINARY_DIR}/_deps/slavetatsng_dep-src/src/nioverride_impl_legacy.cpp"
+    "${CMAKE_CURRENT_BINARY_DIR}/_deps/slavetatsng_dep-src/src/nioverride_wrapper.cpp"
+    "${CMAKE_CURRENT_BINARY_DIR}/_deps/slavetatsng_dep-src/src/ni_node_override_lock.cpp"
+    "${CMAKE_CURRENT_BINARY_DIR}/_deps/slavetatsng_dep-src/src/skee_addresses.cpp"
+    "${CMAKE_CURRENT_BINARY_DIR}/_deps/slavetatsng_dep-src/src/utility.cpp"
 )
-
 
 set(sources ${sources_extern}
         ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
 
 set(headers ${headers} ${headers_extern}
-    include/JContainers/jc_interface.h
-    include/JContainers/jcontainers_constants.h
-    include/slavetatsng_wrapper.h
     include/tattoo_field_db.h
 	include/UI.h
     include/slavetats_util.h
@@ -106,13 +126,14 @@ target_include_directories(${PROJECT_NAME}
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/src>
 		$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/cmake>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/cmake>
         $<INSTALL_INTERFACE:src>)
 
 target_include_directories(${PROJECT_NAME}
         PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/extern/catmenu>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/extern/slavetatsng/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/_deps/slavetatsng_dep-src/include>
 		${CLIB_UTIL_INCLUDE_DIRS})
 
 target_link_libraries(${PROJECT_NAME}

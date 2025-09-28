@@ -23,6 +23,12 @@
 		"range": "unconstrained",
 		"editable": true
 	},
+	"emissivemult": {
+		"name": "emissivemult",
+		"type": "j_float",
+		"range": "unconstrained",
+		"editable": true
+	},
 	"excluded_by": {
 		"name": "excluded_by",
 		"type": "j_string",
@@ -35,10 +41,22 @@
 		"range": "boolean",
 		"editable": true
 	},
+	"glossiness": {
+		"name": "glossiness",
+		"type": "j_float",
+		"range": "unconstrained",
+		"editable": true
+	},
 	"glow": {
 		"name": "glow",
 		"type": "j_int",
 		"range": "rgb",
+		"editable": true
+	},
+	"glowtexture": {
+		"name": "glowtexture",
+		"type": "j_string",
+		"range": "texture_name",
 		"editable": true
 	},
 	"in_bsa": {
@@ -76,6 +94,12 @@
 		"type": "j_int",
 		"range": "unconstrained",
 		"editable": false
+	},
+	"specularstrength": {
+		"name": "specularstrength",
+		"type": "j_float",
+		"range": "unconstrained",
+		"editable": true
 	},
 	"spell_formid": {
 		"name": "spell_formid",

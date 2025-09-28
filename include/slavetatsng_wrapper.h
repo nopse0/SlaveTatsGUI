@@ -1,3 +1,4 @@
+#if 0
 #pragma once
 
 #include <ClibUtil/singleton.hpp>
@@ -102,3 +103,5 @@ namespace slavetats
 
 
 }
+#endif
+

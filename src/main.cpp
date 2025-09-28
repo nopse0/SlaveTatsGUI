@@ -1,6 +1,5 @@
-#include "SlaveTatsNG_InterFace.h"
+#include <SlaveTatsNG_Interface.h>
 #include "jcontainers_wrapper.h"
-#include "slavetatsng_wrapper.h"
 #include "nioverride_wrapper.h"
 #include "config.h"
 #include "UI.h"
@@ -65,9 +64,9 @@ namespace
 			const char* slavetatsPlugin = "SlaveTatsNG";
 			SKSE::GetMessagingInterface()->RegisterListener(slavetatsPlugin, [](SKSE::MessagingInterface::Message* a_msg) {
 				// logger::info("a_msg={}, msgtype={}, message_root_interface={}", (void*)a_msg, a_msg ? a_msg->type : -1, (int)jc::message_root_interface);
-				if (a_msg && a_msg->type == SlaveTatsNG::MessageType::Interface) {
-					const SlaveTatsNG::Addresses* iface = SlaveTatsNG::Addresses::from_void(a_msg->data);
-					slavetats::interface_impl::SlaveTats::GetSingleton()->iface = iface;
+				if (a_msg && a_msg->type == slavetats::interface::MessageType::Interface) {
+					const slavetats::Addresses* iface = slavetats::Addresses::from_void(a_msg->data);
+					slavetats::interface::singleton::get()->iface = iface;
 					logger::info("SlaveTatsNG Interface found: address = {}", (void*)iface);
 					logger::info("simple_add_tattoo: address = {}", (void*)iface->simple_add_tattoo);
 				}

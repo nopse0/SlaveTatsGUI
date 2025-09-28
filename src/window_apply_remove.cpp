@@ -4,7 +4,7 @@
 #include "widget_slot_selector.h"
 #include "widget_cached_tattoo_selector.h"
 #include "slavetats_util.h"
-#include "slavetatsng_wrapper.h"
+#include "slavetatsng_interface.h"
 #include "imgui.h"
 #include "imgui_utils.h"
 
@@ -24,9 +24,16 @@ namespace slavetats_ui
 		static widget_available_slot_selector slot_selector;
 		static widget_cached_tattoo_selector cache_selector;
 
-
 		static widget_actor_selector actor_selector;
 		actor_selector.render();
+
+		std::string actor_version(JFormDB::getStr(actor_selector.actor, ".SlaveTats.version"));
+		if (!actor_version.empty()) {
+			ImGui::SameLine();
+			ImGui::Text("(v%s)", actor_version.c_str());
+		}
+
+		ImGui::SameLine();
 
 		jactor_tattoos_t jtattoos_by_id;
 		jread_actor_tattoos(actor_selector.actor, jtattoos_by_id);

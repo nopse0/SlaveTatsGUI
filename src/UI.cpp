@@ -54,7 +54,7 @@ namespace slavetats_ui {
                 logger::info("CatMenu integration succeed!");
             }
             else {
-                logger::warn("CatMenu integration failed! Doctor_SlaveTatsNG disabled. Error: {}", std::get<1>(result));
+                logger::warn("CatMenu integration failed! SlaveTatsGUI disabled. Error: {}", std::get<1>(result));
                 return;
             }
 
