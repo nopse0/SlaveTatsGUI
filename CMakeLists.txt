@@ -1,13 +1,16 @@
-cmake_minimum_required(VERSION 3.21)
+cmake_minimum_required(VERSION 3.24)
 message("Using toolchain file ${CMAKE_TOOLCHAIN_FILE}.")
 
-include(FetchContent)
-FetchContent_Declare(
-  slavetatsng_dep
-  GIT_REPOSITORY  https://github.com/nopse0/SlaveTatsNG.git
-  GIT_TAG 7a6f6625f7083eb61a5db32e845cd5363d04c1ab
-  EXCLUDE_FROM_ALL
-)
+# This didn't work (recursion depth exceeded), so I am using a git-submodule now (sigh, but still better than copying)
+#if(NOT CMAKE_MAXIMUM_RECURSION_DEPTH)
+#  set(CMAKE_MAXIMUM_RECURSION_DEPTH 2000)
+#endif()
+#include(FetchContent)
+#FetchContent_Declare(
+#  slavetatsng_dep
+#  GIT_REPOSITORY  https://github.com/nopse0/SlaveTatsNG.git
+#  GIT_TAG 7a6f6625f7083eb61a5db32e845cd5363d04c1ab
+#)
 #FetchContent_MakeAvailable(slavetatsng_dep)
 
 ########################################################################################################################
@@ -40,26 +43,26 @@ file(
 )     
 
 set(headers_extern ${headers_extern}
-   "${CMAKE_CURRENT_BINARY_DIR}/_deps/slavetatsng_dep-src/include/config.h"
-   "${CMAKE_CURRENT_BINARY_DIR}/_deps/slavetatsng_dep-src/include/jcontainers_wrapper.h"
-   "${CMAKE_CURRENT_BINARY_DIR}/_deps/slavetatsng_dep-src/include/nioverride_impl.h"
-   "${CMAKE_CURRENT_BINARY_DIR}/_deps/slavetatsng_dep-src/include/nioverride_impl_current.h"
-   "${CMAKE_CURRENT_BINARY_DIR}/_deps/slavetatsng_dep-src/include/nioverride_impl_legacy.h"
-   "${CMAKE_CURRENT_BINARY_DIR}/_deps/slavetatsng_dep-src/include/nioverride_wrapper.h"
-   "${CMAKE_CURRENT_BINARY_DIR}/_deps/slavetatsng_dep-src/include/ni_node_override_lock.h"
-   "${CMAKE_CURRENT_BINARY_DIR}/_deps/slavetatsng_dep-src/include/skee_addresses.h"
-   "${CMAKE_CURRENT_BINARY_DIR}/_deps/slavetatsng_dep-src/include/SlaveTatsNG_Interface.h"
-   "${CMAKE_CURRENT_BINARY_DIR}/_deps/slavetatsng_dep-src/include/utility.h"
+   "${CMAKE_CURRENT_SOURCE_DIR}/extern/SlaveTatsNG/include/config.h"
+   "${CMAKE_CURRENT_SOURCE_DIR}/extern/SlaveTatsNG/include/jcontainers_wrapper.h"
+   "${CMAKE_CURRENT_SOURCE_DIR}/extern/SlaveTatsNG/include/nioverride_impl.h"
+   "${CMAKE_CURRENT_SOURCE_DIR}/extern/SlaveTatsNG/include/nioverride_impl_current.h"
+   "${CMAKE_CURRENT_SOURCE_DIR}/extern/SlaveTatsNG/include/nioverride_impl_legacy.h"
+   "${CMAKE_CURRENT_SOURCE_DIR}/extern/SlaveTatsNG/include/nioverride_wrapper.h"
+   "${CMAKE_CURRENT_SOURCE_DIR}/extern/SlaveTatsNG/include/ni_node_override_lock.h"
+   "${CMAKE_CURRENT_SOURCE_DIR}/extern/SlaveTatsNG/include/skee_addresses.h"
+   "${CMAKE_CURRENT_SOURCE_DIR}/extern/SlaveTatsNG/include/SlaveTatsNG_Interface.h"
+   "${CMAKE_CURRENT_SOURCE_DIR}/extern/SlaveTatsNG/include/utility.h"
 )
 
 set(sources_extern
-    "${CMAKE_CURRENT_BINARY_DIR}/_deps/slavetatsng_dep-src/src/config.cpp"
-    "${CMAKE_CURRENT_BINARY_DIR}/_deps/slavetatsng_dep-src/src/jcontainers_wrapper.cpp"
-    "${CMAKE_CURRENT_BINARY_DIR}/_deps/slavetatsng_dep-src/src/nioverride_impl_legacy.cpp"
-    "${CMAKE_CURRENT_BINARY_DIR}/_deps/slavetatsng_dep-src/src/nioverride_wrapper.cpp"
-    "${CMAKE_CURRENT_BINARY_DIR}/_deps/slavetatsng_dep-src/src/ni_node_override_lock.cpp"
-    "${CMAKE_CURRENT_BINARY_DIR}/_deps/slavetatsng_dep-src/src/skee_addresses.cpp"
-    "${CMAKE_CURRENT_BINARY_DIR}/_deps/slavetatsng_dep-src/src/utility.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/extern/SlaveTatsNG/src/config.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/extern/SlaveTatsNG/src/jcontainers_wrapper.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/extern/SlaveTatsNG/src/nioverride_impl_legacy.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/extern/SlaveTatsNG/src/nioverride_wrapper.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/extern/SlaveTatsNG/src/ni_node_override_lock.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/extern/SlaveTatsNG/src/skee_addresses.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/extern/SlaveTatsNG/src/utility.cpp"
 )
 
 set(sources ${sources_extern}
@@ -133,7 +136,7 @@ target_include_directories(${PROJECT_NAME}
         PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 		$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/extern/catmenu>
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/_deps/slavetatsng_dep-src/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/extern/SlaveTatsNG/include>
 		${CLIB_UTIL_INCLUDE_DIRS})
 
 target_link_libraries(${PROJECT_NAME}

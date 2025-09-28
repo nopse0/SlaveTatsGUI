@@ -1,0 +1,3 @@
+[submodule "extern/SlaveTatsNG"]
+	path = extern/SlaveTatsNG
+	url = https://github.com/nopse0/SlaveTatsNG.git
