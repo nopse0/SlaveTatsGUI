@@ -72,20 +72,20 @@ set(headers ${headers} ${headers_extern}
     include/tattoo_field_db.h
 	include/UI.h
     include/slavetats_util.h
-    include/widget_actor_selector.h
-    include/widget_area_selector.h
-    include/widget_slot_selector.h
-    include/widget_field_selector.h
-    include/window_field_editor.h
-    include/window_inspector.h
-    include/widget_int_editor.h
-    include/widget_float_editor.h
-    include/widget_string_editor.h
-    include/widget_new_field_selector.h
+#    include/widget_actor_selector.h
+#    include/widget_area_selector.h
+#    include/widget_slot_selector.h
+#    include/widget_field_selector.h
+#    include/window_field_editor.h
+#    include/window_inspector.h
+#    include/widget_int_editor.h
+#    include/widget_float_editor.h
+#    include/widget_string_editor.h
+#    include/widget_new_field_selector.h
     include/nioverride_utils.h
-    include/widget_override_list.h
-    include/widget_cached_tattoo_selector.h
-    include/window_apply_remove.h
+#    include/widget_override_list.h
+#    include/widget_cached_tattoo_selector.h
+#    include/window_apply_remove.h
     include/imgui_utils.h
     include/model_and_views.h
     include/win_actor_editor.h
@@ -100,20 +100,20 @@ set(sources ${sources}
     src/tattoo_field_db.cpp
 	src/main.cpp
     src/slavetats_util.cpp
-    src/widget_actor_selector.cpp
-    src/widget_area_selector.cpp
-    src/widget_slot_selector.cpp
-    src/widget_field_selector.cpp
-    src/window_field_editor.cpp
-    src/window_inspector.cpp
-    src/widget_int_editor.cpp
-    src/widget_float_editor.cpp
-    src/widget_string_editor.cpp
-    src/widget_new_field_selector.cpp
+#    src/widget_actor_selector.cpp
+#    src/widget_area_selector.cpp
+#    src/widget_slot_selector.cpp
+#    src/widget_field_selector.cpp
+#    src/window_field_editor.cpp
+#    src/window_inspector.cpp
+#    src/widget_int_editor.cpp
+#    src/widget_float_editor.cpp
+#    src/widget_string_editor.cpp
+#    src/widget_new_field_selector.cpp
     src/nioverride_utils.cpp
-    src/widget_override_list.cpp
-    src/widget_cached_tattoo_selector.cpp
-    src/window_apply_remove.cpp
+#    src/widget_override_list.cpp
+#    src/widget_cached_tattoo_selector.cpp
+#    src/window_apply_remove.cpp
     src/imgui_utils.cpp
 	src/UI.cpp
     src/model_and_views.cpp
