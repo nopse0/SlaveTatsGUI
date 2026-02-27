@@ -1,7 +1,9 @@
 #pragma once
 
+#include "imgui.h"
+
 namespace slavetats_ui {
-	void show_confirmation_popups(bool* confirmed, bool* success_shown, bool* error_shown);
+	void begin_confirmation_popups(ImGuiID* successPopupId, ImGuiID* errorPopupId, bool* onSuccess);
 
 	inline constexpr uint32_t ABGRtoARGB(uint32_t abgr) {
 		uint32_t rgb = abgr & 0xff;

@@ -1,12 +1,55 @@
 #pragma once
-//#include "tattoo_field_definitions.h"
+
 #include "frozen/map.h"
 #include "frozen/unordered_map.h"
-#include "slavetats_util.h"
+#include "nioverride_wrapper.h"
+#include "magic_enum.hpp"
 
 
-namespace slavetats_ui
-{
+namespace slavetats_ui {
+
+	enum class tattoo_area {
+		BODY = 0,
+		FACE = 1,
+		FEET = 2,
+		HANDS = 3,
+		no_value = 4
+	};
+
+	inline int get_num_slots(tattoo_area area) {
+		int num_slots = 0;
+		switch (area) {
+		case tattoo_area::BODY:
+			num_slots = slavetats_ng::skee_wrapper::NiOverride::GetNumBodyOverlays();
+			break;
+		case  tattoo_area::FACE:
+			num_slots = slavetats_ng::skee_wrapper::NiOverride::GetNumFaceOverlays();
+			break;
+		case  tattoo_area::FEET:
+			num_slots = slavetats_ng::skee_wrapper::NiOverride::GetNumFeetOverlays();
+			break;
+		case  tattoo_area::HANDS:
+			num_slots = slavetats_ng::skee_wrapper::NiOverride::GetNumHandsOverlays();
+			break;
+		}
+		return num_slots;
+	}
+
+	static inline constexpr auto tattoo_areas = magic_enum::enum_names<tattoo_area>();
+
+	struct tattoo_key {
+		tattoo_area area;
+		int slot;
+
+		inline bool operator < (const tattoo_key& rhs) const {
+			if (area < rhs.area)
+				return true;
+			else if (area > rhs.area)
+				return false;
+			else
+				return slot < rhs.slot;
+		}
+	};
 	enum class ni_override_type {
 		ni_undefined = 0,
 		ni_int = 1,

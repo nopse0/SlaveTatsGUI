@@ -1,30 +1,30 @@
 #include "tattoo_field_db.h"
 #include "menu_api.h"
 #include "UI.h"
-#include "window_field_editor.h"
-#include "window_inspector.h"
-#include "window_apply_remove.h"
+//#include "window_field_editor.h"
+//#include "window_inspector.h"
+//#include "window_apply_remove.h"
+#include "win_actor_editor.h"
+#include "win_field_editor.h"
+#include "win_inspector.h"
 
 namespace slavetats_ui {
 
     bool render_inspector() {
         bool window_shown = true;
-        static slavetats_ui::window_inspector inspector;
-        inspector.render(&window_shown);
+        win_inspector_render(&window_shown);
         return window_shown;
     }
 
     bool render_apply_remove() {
         bool window_shown = true;
-        static slavetats_ui::window_apply_remove apply_remove;
-        apply_remove.render(&window_shown);
+        win_actor_editor_render(&window_shown);
         return window_shown;
     }
 
     bool render_field_editor() {
         bool window_shown = true;
-        static slavetats_ui::window_field_editor editor;
-        editor.render(&window_shown);
+        win_field_editor_render(&window_shown);
         return window_shown;
     }
 
