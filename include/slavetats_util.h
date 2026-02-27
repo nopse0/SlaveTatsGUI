@@ -1,54 +1,12 @@
 #pragma once
 #include "magic_enum.hpp"
-#include "nioverride_wrapper.h"
+// #include "nioverride_wrapper.h"
 #include "jcontainers_wrapper.h"
+#include "nioverride_utils.h"
 
 namespace slavetats_ui
 {
     using namespace slavetats_ng::jcwrapper;
-
-    enum class tattoo_area {
-        BODY = 0, 
-        FACE = 1, 
-        FEET = 2, 
-        HANDS = 3,
-        no_value = 4
-    };
-
-    inline int get_num_slots(tattoo_area area) {
-        int num_slots = 0;
-        switch (area) {
-        case tattoo_area::BODY:
-            num_slots = slavetats_ng::skee_wrapper::NiOverride::GetNumBodyOverlays();
-            break;
-        case  tattoo_area::FACE:
-            num_slots = slavetats_ng::skee_wrapper::NiOverride::GetNumFaceOverlays();
-            break;
-        case  tattoo_area::FEET:
-            num_slots = slavetats_ng::skee_wrapper::NiOverride::GetNumFeetOverlays();
-            break;
-        case  tattoo_area::HANDS:
-            num_slots = slavetats_ng::skee_wrapper::NiOverride::GetNumHandsOverlays();
-            break;
-        }
-        return num_slots;
-    }
-
-    static inline constexpr auto tattoo_areas = magic_enum::enum_names<tattoo_area>();
-
-    struct tattoo_key {
-        tattoo_area area;
-        int slot;
-
-        inline bool operator < (const tattoo_key& rhs) const {
-            if (area < rhs.area)
-                return true;
-            else if (area > rhs.area)
-                return false;
-            else
-                return slot < rhs.slot;
-        }
-    };
 
     struct slot_descriptor {
         int slot_num = 0;
@@ -58,6 +16,24 @@ namespace slavetats_ui
         // Why do I have to define this ?
         bool operator==(const slot_descriptor&) const = default;
     };
+
+    struct slot_info_t {
+        tattoo_area area = tattoo_area::no_value;
+        int slot_num = 0;
+        std::string label;
+
+        // SlaveTats
+        std::string name;             
+        std::string section;
+        int tattoo_id = 0;            // SlaveTats tattoo for this slot number (if id = 0, there is none)
+        // NiOverride
+        std::string texture_name;     // if empty, the slot is free
+
+        // Why do I have to define this ?
+        bool operator==(const slot_info_t&) const = default;
+    };
+
+    typedef std::map<tattoo_area, std::vector<slot_info_t>> area_slots_t;
 
     // void find_npcs(std::vector<RE::Actor*>& actors);
     std::vector<RE::Actor*> find_actors();
@@ -73,20 +49,24 @@ namespace slavetats_ui
         j_string = 6
     };
     
-    constexpr static inline std::array<const char*, magic_enum::enum_count<jvalue_type>()>  jvalue_type_pretty_names{
+    // Compiler evaluates 'magic_enum::enum_count<jvalue_type>' correctly, but not IntelliSense (E0146), so using hardcoded '7' here 
+    //
+    //constexpr static inline std::array<const char*, magic_enum::enum_count<jvalue_type>()>  jvalue_type_pretty_names{
+    constexpr static inline std::array<const char*, 7>  jvalue_type_pretty_names{
         "<no value>",
         "None",
         "Int",
         "Float",
         "Complex",
         "Form",
-        "String",
+        "String"
     };
 
     using jvalue_variant_t = std::variant<int, float, RE::TESForm*, std::string>;
     struct jvalue_t {
         jvalue_type type = jvalue_type::j_none;
         jvalue_variant_t value;
+        bool operator==(const jvalue_t&) const = default;
     };
 
     using jfields_t = std::map<std::string, jvalue_t>;
@@ -98,6 +78,7 @@ namespace slavetats_ui
         int tattoos = JFormDB::getObj(actor, ".SlaveTats.applied");
         jread_tattoo_array(tattoos, jtattoos);
     }
+    typedef jactor_tattoos_t::value_type  jactor_tattoo_t;
 
     using jid_by_area_slot_t = std::map< tattoo_key, int >;
     void jtattoos_by_area_slot(const jactor_tattoos_t& tattoos, jid_by_area_slot_t& tattoos_by_area_slot);
@@ -106,8 +87,13 @@ namespace slavetats_ui
 
     using section_tattoos_t = std::map<std::string, jactor_tattoos_t>;
     using area_sections_t = std::map<tattoo_area, section_tattoos_t>;
-    void read_slavetats_cache(area_sections_t& area_tattoos);
+    void read_slavetats_installed_tattoos(area_sections_t& area_tattoos);
 
     using name_to_tattoo_t = std::map<std::string, int>;
     using section_tattoo_names_t = std::map<std::string, name_to_tattoo_t>;
+    using area_section_tattoo_names_t = std::map<tattoo_area, section_tattoo_names_t>;
+    void read_slavetats_installed_tattoo_names(const area_sections_t& area_tattoos, area_section_tattoo_names_t& tattoo_names);
+
+    void read_slot_infos(const jactor_tattoos_t& tattoos, const jid_by_area_slot_t& tattoos_by_area_slot, const actor_overrides_t& overrides, area_slots_t& result);
+
 }

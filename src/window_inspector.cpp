@@ -18,7 +18,7 @@ namespace slavetats_ui
 		//		{
 		//			[&] {
 
-		if (!ImGui::Begin("[SlaveTats] Inspector", window_shown)) {
+		if (!ImGui::Begin("[SlaveTats] Inspector (old version)", window_shown)) {
 			ImGui::End();
 			return;
 		}

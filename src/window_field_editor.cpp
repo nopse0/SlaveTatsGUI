@@ -24,10 +24,12 @@ namespace slavetats_ui
 //        {
 //            [&] {
 
-        if (!ImGui::Begin("[SlaveTats] Field Editor", window_shown)) {
+        if (!ImGui::Begin("[SlaveTats] Field Editor (old version)", window_shown)) {
             ImGui::End();
             return;
         }
+
+        ImGui::PushID("window_field_editor_old");
 
         static widget_actor_selector actor_selector;
         actor_selector.render();
@@ -114,6 +116,8 @@ namespace slavetats_ui
         
             
         }
+
+        ImGui::PopID();
 
         ImGui::End();
 

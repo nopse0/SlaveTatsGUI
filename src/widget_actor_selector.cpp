@@ -1,5 +1,6 @@
 #include "widget_actor_selector.h"
 #include "imgui.h"
+#include "model_and_views.h"
 
 namespace slavetats_ui
 {

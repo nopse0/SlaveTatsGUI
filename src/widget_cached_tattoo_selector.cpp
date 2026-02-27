@@ -10,6 +10,9 @@ namespace slavetats_ui
 
         if (!section_tattoos.empty()) {
             if (section_selected.empty()) {
+                // 'applied_tattoo' is the tattoo in the currently selected slot. The purpose of the following is to set the initial section and tattoo name 
+                // cursor positions to the section and name of the 'applied_tattoo' (of course, it's possible that there is no tattoo in the selected slot,
+                // or that the section or name of the applied tattoo isn't installed anymore (i.e. listed in the .json files in the slavetats folder))
                 if (applied_tattoo.has_value()) {
                     std::string section_applied;
                     std::string name_applied;

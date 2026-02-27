@@ -16,10 +16,12 @@ namespace slavetats_ui
         //{
         //    [&] {
 
-		if (!ImGui::Begin("[SlaveTats] Apply/Remove Tattoo", window_shown)) {
+		if (!ImGui::Begin("[SlaveTats] Apply/Remove Tattoo (old version)", window_shown)) {
 			ImGui::End();
 			return;
 		}
+
+		ImGui::PushID("window_apply_remove_old");
 
 		static widget_available_slot_selector slot_selector;
 		static widget_cached_tattoo_selector cache_selector;
@@ -60,7 +62,7 @@ namespace slavetats_ui
 			// TODO: We should also rebuild the SlaveTats cache here, so tattoo packs can be installed at runtime (but currently that's not possible, because 'compile_cache'
 			// isn't part of the SlaveTats api interface
 			area_sections_t tmp;
-			read_slavetats_cache(tmp);
+			read_slavetats_installed_tattoos(tmp);
 			area_sections.emplace(std::move(tmp));
 			slot_selector.reset();
 			cache_selector.reset();
@@ -317,7 +319,7 @@ namespace slavetats_ui
 		}
 
 
-
+		ImGui::PopID();
 
 		ImGui::End();
 

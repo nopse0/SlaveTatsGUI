@@ -87,6 +87,12 @@ set(headers ${headers} ${headers_extern}
     include/widget_cached_tattoo_selector.h
     include/window_apply_remove.h
     include/imgui_utils.h
+    include/model_and_views.h
+    include/win_actor_editor.h
+    include/win_field_editor.h
+    include/combos.h
+    include/editors.h
+    include/win_inspector.h
 	src/PCH.h
 )
 
@@ -110,6 +116,12 @@ set(sources ${sources}
     src/window_apply_remove.cpp
     src/imgui_utils.cpp
 	src/UI.cpp
+    src/model_and_views.cpp
+    src/win_actor_editor.cpp
+    src/win_field_editor.cpp
+    src/combos.cpp
+    src/editors.cpp
+    src/win_inspector.cpp
 )
 
 ########################################################################################################################

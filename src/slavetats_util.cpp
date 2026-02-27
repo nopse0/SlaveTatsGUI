@@ -131,7 +131,7 @@ namespace slavetats_ui {
         }
     }
 
-    void read_slavetats_cache(area_sections_t& area_sections) {
+    void read_slavetats_installed_tattoos(area_sections_t& area_sections) {
         int cache = JDB::solveObj(".SlaveTatsNG.cache");
         if (cache) {
             int domain = JMap::getObj(cache, "default");
@@ -157,5 +157,76 @@ namespace slavetats_ui {
         }
     }
 
+    void read_slavetats_installed_tattoo_names(const area_sections_t& area_sections, area_section_tattoo_names_t& area_section_tattoo_names) {
+        for (auto ait = area_sections.begin(); ait != area_sections.end(); ++ait) {
+            section_tattoo_names_t section_tattoo_names;
+            for (auto& sec : ait->second) {
+                name_to_tattoo_t tattoo_names;   // tattoo names of this section
+                for (auto& tatit : sec.second) {
+                    auto namit = tatit.second.find("name");
+                    if (namit != tatit.second.end() && namit->second.type == jvalue_type::j_string) {
+                        auto& tattoo_name = std::get<std::string>(namit->second.value);
+                        tattoo_names.emplace(tattoo_name, tatit.first);
+                    }
+                }
+                section_tattoo_names.emplace(sec.first, std::move(tattoo_names));
+            }
+            area_section_tattoo_names.emplace(ait->first, std::move(section_tattoo_names));
+        }
+    }
+
+
+    void read_slot_infos(const jactor_tattoos_t& tattoos, const jid_by_area_slot_t& tattoo_ids, const actor_overrides_t& overrides, area_slots_t& result) {
+
+        for (auto area : { tattoo_area::BODY, tattoo_area::FACE, tattoo_area::FEET, tattoo_area::HANDS }) {
+            int num_slots = get_num_slots(area);
+            std::vector<slot_info_t> slots;
+            for (int i = 0; i < num_slots; i++) {
+                auto tkey = tattoo_key{ area, i };
+
+                std::string texture_name;
+                auto override_it = overrides.find(tkey);
+                if (override_it != overrides.end()) {
+                    auto diffuse_it = override_it->second.find(ni_override_key{ 9, 0 });
+                    if (diffuse_it != override_it->second.end())
+                        texture_name = std::get<std::string>(diffuse_it->second);
+                }
+
+                auto jid = tattoo_ids.find(tkey);
+                if (jid != tattoo_ids.end()) { // slot contains SlaveTats tattoo
+                    auto it = tattoos.find(jid->second);
+                    if (it != tattoos.end()) {
+                        int tattoo_id = jid->second;
+                        auto name_it = it->second.find("name");
+                        std::string name;
+                        if (name_it != it->second.end())
+                            name = jvalue_as_string(name_it->second);
+                        auto section_it = it->second.find("section");
+                        std::string section;
+                        if (section_it != it->second.end())
+                            section = jvalue_as_string(section_it->second);
+                        std::string label(std::format("{} - (\"{}\" / \"{}\")", i, name, section));
+                        slots.push_back(slot_info_t{ area, i, label, name, section, tattoo_id, texture_name });
+                    }
+                    else {
+                        logger::error("Internal error, tattoo maps inconsistent");
+                        // add a dummy entry, so the slot infos can be accessed via index
+                        slots.push_back(slot_info_t{ area, i, std::format("{} - <error>", i), "", "", 0, ""});
+                    }
+                }
+                else {
+                    std::string label;
+                    if (!texture_name.empty()) { // slot contains external overlay
+                        label = std::format("{} - <external> (\"{}\")", i, texture_name);
+                    }
+                    else {						// slot is empty
+                        label = std::format("{} - <empty>", i);
+                    }
+                    slots.push_back(slot_info_t{ area, i, label, "", "", 0, texture_name });
+                }
+            }
+            result.emplace(area, std::move(slots));
+        }
+    }
 
 }

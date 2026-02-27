@@ -9,7 +9,7 @@ namespace slavetats_ui
 	
 		int num_slots = get_num_slots(area);
 
-		ImGuiTreeNodeFlags slot_tree_flags = ImGuiTreeNodeFlags_Framed; // | ImGuiTreeNodeFlags_DefaultOpen;
+		ImGuiTreeNodeFlags slot_tree_flags = ImGuiTreeNodeFlags_Framed; //| ImGuiTreeNodeFlags_DefaultOpen;
 
 		if (ImGui::TreeNodeEx("Slots", slot_tree_flags)) {
 			int num_slots = get_num_slots(area);
