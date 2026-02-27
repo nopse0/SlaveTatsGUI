@@ -18,7 +18,7 @@ message("Using toolchain file ${CMAKE_TOOLCHAIN_FILE}.")
 ########################################################################################################################
 project(
         SlaveTatsGUI
-        VERSION 0.1.2
+        VERSION 0.2.0
         DESCRIPTION "SlaveTats GUI."
         LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 23)

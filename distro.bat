@@ -1,4 +1,4 @@
-set root="C:\Build\SlaveTatsGUI"
+set root="C:\Build\SlaveTatsGUI\SlaveTatsGUI"
 set pluginsrc=%root%\build\release-msvc
 set configsrc=%root%\config
 set dist=%root%\dist\SlaveTatsGUI
