@@ -1,8 +1,7 @@
 #pragma once
-//#include "tattoo_field_definitions.h"
+
 #include "frozen/map.h"
 #include "frozen/unordered_map.h"
-// #include "slavetats_util.h"
 #include "nioverride_wrapper.h"
 #include "magic_enum.hpp"
 

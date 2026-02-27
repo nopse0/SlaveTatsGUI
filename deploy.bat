@@ -1,4 +1,4 @@
-set root="C:\Build\SlaveTatsGUI"
+set root="C:\Build\SlaveTatsGUI\SlaveTatsGUI"
 rem set dest="F:\Games\Skyrim-1.6.1170"
 set dest="D:\Games\Skyrim-1.5.97"
 set configsrc=%root%\config

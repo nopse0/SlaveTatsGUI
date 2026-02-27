@@ -163,7 +163,7 @@ namespace slavetats_ui {
 	}
 
 	void popup_apply_new_tattoo(actor_model_t* actor_model, selected_slot_model_t* selected_slot, tattoo_in_section_model_t* tattoo_in_section,
-		applied_tattoos_model_t* applied_tattoos, nioverride_model_t* nioverride_model, bool* confirmed) {
+		applied_tattoos_model_t* applied_tattoos, nioverride_model_t* nioverride_model, ImGuiID idSuccess, ImGuiID idError) {
 
 		auto actor = actor_model->get_actor();
 		if (actor) {
@@ -182,20 +182,13 @@ namespace slavetats_ui {
 
 					if (ImGui::Button("OK", ImVec2(120, 0))) {
 						int new_tattoo = slavetats::add_and_get_tattoo(actor, tattoo.tattoo_id, slot_info.slot_num);
+						ImGui::CloseCurrentPopup();
 						if (new_tattoo) {
-							ImGui::OpenPopup("Success");
-							// refresh_models(actor, applied_tattoos, nioverride_model);
+							ImGui::OpenPopup(idSuccess);
 						}
 						else
-							ImGui::OpenPopup("Error");
+							ImGui::OpenPopup(idError);
 					}
-					// ------- Confirmation popups -----------------
-					bool success_shown = true;
-					bool error_shown = true;
-					show_confirmation_popups(confirmed, &success_shown, &error_shown);
-					//if (confirmed) {
-					//	ImGui::CloseCurrentPopup();
-					//}
 
 					ImGui::SameLine();
 					ImGui::SetItemDefaultFocus();
@@ -209,7 +202,7 @@ namespace slavetats_ui {
 	}
 
 	void popup_remove_tattoo(actor_model_t* actor_model, selected_slot_model_t* selected_slot, applied_tattoos_model_t* applied_tattoos, 
-		nioverride_model_t* nioverride_model, bool* confirmed) {
+		nioverride_model_t* nioverride_model, ImGuiID idSuccess, ImGuiID idError) {
 		auto actor = actor_model->get_actor();
 		if (actor) {
 			if (selected_slot->selected_slot().has_value()) {
@@ -225,20 +218,13 @@ namespace slavetats_ui {
 
 					if (ImGui::Button("OK", ImVec2(120, 0))) {
 						bool error = slavetats::remove_tattoo_from_slot(actor, magic_enum::enum_name(slot_info.area), slot_info.slot_num);
+						ImGui::CloseCurrentPopup();
 						if (!error) {
-							ImGui::OpenPopup("Success");
-							// refresh_models(actor, applied_tattoos, nioverride_model);
+							ImGui::OpenPopup(idSuccess);
 						} 
 						else
-							ImGui::OpenPopup("Error");
+							ImGui::OpenPopup(idError);
 					}
-					// ------- Confirmation popups -----------------
-					bool success_shown = true;
-					bool error_shown = true;
-					show_confirmation_popups(confirmed, &success_shown, &error_shown);
-					//if (confirmed) {
-					//	ImGui::CloseCurrentPopup();
-					//}
 
 					ImGui::SameLine();
 					ImGui::SetItemDefaultFocus();
@@ -253,7 +239,7 @@ namespace slavetats_ui {
 	}
 
 	void popup_reapply_tattoo(actor_model_t* actor_model, selected_slot_model_t* selected_slot, tattoo_in_section_model_t* tattoo_in_section,
-		applied_tattoos_model_t* applied_tattoos, nioverride_model_t* nioverride_model, bool* confirmed) {
+		applied_tattoos_model_t* applied_tattoos, nioverride_model_t* nioverride_model, ImGuiID idSuccess, ImGuiID idError) {
 
 		auto actor = actor_model->get_actor();
 		if (actor) {
@@ -272,20 +258,13 @@ namespace slavetats_ui {
 
 					if (ImGui::Button("OK", ImVec2(120, 0))) {
 						int new_tattoo = slavetats::add_and_get_tattoo(actor, tattoo.tattoo_id, slot_info.slot_num);
+						ImGui::CloseCurrentPopup();
 						if (new_tattoo) {
-							ImGui::OpenPopup("Success");
-							// refresh_models(actor, applied_tattoos, nioverride_model);
+							ImGui::OpenPopup(idSuccess);
 						}
 						else
-							ImGui::OpenPopup("Error");
+							ImGui::OpenPopup(idError);
 					}
-					// ------- Confirmation popups -----------------
-					bool success_shown = true;
-					bool error_shown = true;
-					show_confirmation_popups(confirmed, &success_shown, &error_shown);
-					//if (confirmed) {
-					//	ImGui::CloseCurrentPopup();
-					//}
 
 					ImGui::SameLine();
 					ImGui::SetItemDefaultFocus();
@@ -299,10 +278,8 @@ namespace slavetats_ui {
 		}
 	}
 
-
-
 	void popup_replace_tattoo(actor_model_t* actor_model, selected_slot_model_t* selected_slot, tattoo_in_section_model_t* tattoo_in_section,
-		applied_tattoos_model_t* applied_tattoos, nioverride_model_t* nioverride_model, bool* confirmed) {
+		applied_tattoos_model_t* applied_tattoos, nioverride_model_t* nioverride_model, ImGuiID idSuccess, ImGuiID idError) {
 
 		auto actor = actor_model->get_actor();
 		if (actor) {
@@ -327,21 +304,14 @@ namespace slavetats_ui {
 						if (!slavetats::tattoo_matches(tattoo.tattoo_id, slot_info.tattoo_id)) {
 							new_tattoo = slavetats::add_and_get_tattoo(actor, tattoo.tattoo_id, slot_info.slot_num);
 						}
+						ImGui::CloseCurrentPopup();
 						if (new_tattoo) {
-							ImGui::OpenPopup("Success");
-							// refresh_models(actor, applied_tattoos, nioverride_model);
+							ImGui::OpenPopup(idSuccess);
 						}
 						else
-							ImGui::OpenPopup("Error");
+							ImGui::OpenPopup(idError);
 					}
-					// ------- Confirmation popups -----------------
-					bool success_shown = true;
-					bool error_shown = true;
-					show_confirmation_popups(confirmed, &success_shown, &error_shown);
-					//if (confirmed) {
-					//	ImGui::CloseCurrentPopup();
-					//}
-
+					
 					ImGui::SameLine();
 					ImGui::SetItemDefaultFocus();
 					if (ImGui::Button("Cancel", ImVec2(120, 0))) {
@@ -360,13 +330,21 @@ namespace slavetats_ui {
 			return;
 		}
 
-		std::thread t1
-		{
-			[&] {
-
-		ImGui::PushID("win_actor_editor");
+		//std::thread t1
+		//{
+		//	[&] {
 
 		static win_actor_editor_models* models = new win_actor_editor_models();
+
+		ImGuiID successPopupId;
+		ImGuiID errorPopupId;
+		bool onSuccess = false;
+		begin_confirmation_popups(&successPopupId, &errorPopupId, &onSuccess);
+		if (onSuccess) {
+			refresh_models(models->actor_model, models->actor_tattoos_model, models->nioverride_model);
+		}
+		
+		ImGui::PushID("win_actor_editor");
 
 		slavetats_model_t::GetSingleton()->refresh();
 
@@ -392,25 +370,21 @@ namespace slavetats_ui {
 		// define popups, which can be shown via the buttons above
 		bool confirmed = false;
 		popup_apply_new_tattoo(models->actor_model, models->selected_slot_model, models->tattoo_in_section_model,
-			models->actor_tattoos_model, models->nioverride_model, &confirmed);
-		popup_remove_tattoo(models->actor_model, models->selected_slot_model, models->actor_tattoos_model, models->nioverride_model, &confirmed);
+			models->actor_tattoos_model, models->nioverride_model, successPopupId, errorPopupId);
+		popup_remove_tattoo(models->actor_model, models->selected_slot_model, models->actor_tattoos_model, models->nioverride_model, 
+			successPopupId, errorPopupId);
 		popup_reapply_tattoo(models->actor_model, models->selected_slot_model, models->tattoo_in_section_model,
-			models->actor_tattoos_model, models->nioverride_model, &confirmed);
+			models->actor_tattoos_model, models->nioverride_model, successPopupId, errorPopupId);
 		popup_replace_tattoo(models->actor_model, models->selected_slot_model, models->tattoo_in_section_model,
-			models->actor_tattoos_model, models->nioverride_model, &confirmed);
-
-		if (confirmed) {
-			ImGui::CloseCurrentPopup();
-			refresh_models(models->actor_model, models->actor_tattoos_model, models->nioverride_model);
-		}
+			models->actor_tattoos_model, models->nioverride_model, successPopupId, errorPopupId);
 
 		ImGui::PopID();
 
 		ImGui::End();
 
-			}
-		};
-		t1.join();
+		//	}
+		//};
+		//t1.join();
 
 	}
 

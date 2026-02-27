@@ -417,9 +417,9 @@ namespace slavetats_ui {
 			return;
 		}
 
-		std::thread t1
-		{
-			[&] {
+		//std::thread t1
+		//{
+		//	[&] {
 
 		static win_field_editor_models* models = new win_field_editor_models();
 		
@@ -461,24 +461,17 @@ namespace slavetats_ui {
 		group_field_editor_float_render(models->field_in_tattoo_model, models->field_editor_float_model);
 		group_field_editor_string_render(models->field_in_tattoo_model, models->field_editor_string_model);
 
-		//bool confirmed = false;
 		popup_change_or_add_field(models->field_in_tattoo_model, models->field_editor_int_model, models->field_editor_float_model, models->field_editor_string_model, 
 			models->actor_model, models->selected_slot_model, successPopupId, errorPopupId);
 		popup_remove_field(models->field_in_tattoo_model, models->actor_model, models->selected_slot_model, successPopupId, errorPopupId);
-		//if (confirmed) {
-		//	ImGui::CloseCurrentPopup();
-		//	refresh_models(models->actor_model, models->actor_tattoos_model, models->nioverride_model);
-		//}
-
-
 
 		ImGui::PopID();
 
 		ImGui::End();
 
-				}
-		};
-		t1.join();
+		//		}
+		//};
+		//t1.join();
 	}
 
 }

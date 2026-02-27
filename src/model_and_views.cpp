@@ -80,10 +80,17 @@ namespace slavetats_ui {
 	//#########################################################################################################
 
 	actor_scanner_model::actor_scanner_model() {
-		// last_scan = std::chrono::steady_clock::now();
+		slavetats_model_registered = slavetats_model_t::GetSingleton()->interest_register(
+			slavetats_model_t::interest_mask{
+				slavetats_model_t::dirty_flags::periodic_refresh
+			});
 		init();
 	}
 
+	actor_scanner_model::~actor_scanner_model() {
+		slavetats_model_t::GetSingleton()->interest_unregister(slavetats_model_registered);
+	}
+	
 	void actor_scanner_model::init() {
 		_actors = find_actors();
 		_actor_labels.clear();
@@ -94,16 +101,13 @@ namespace slavetats_ui {
 	}
 
 	void actor_scanner_model::update() {
-		/*auto now = std::chrono::steady_clock::now();
-		if (std::chrono::duration_cast<std::chrono::milliseconds>(now - last_scan) > 1000ms) {
-			last_scan = std::chrono::steady_clock::now();
-			_actors = find_actors();
-			_actor_labels.clear();
-			for (auto actor : _actors) {
-				const auto base = actor->GetActorBase();
-				_actor_labels.push_back(std::format("{:#010x} ({})", actor->GetFormID(), base->GetName()));
-			}
-		}*/
+		bool dirty_st = slavetats_model_t::GetSingleton()->test_and_clear_dirty(slavetats_model_registered);
+
+		bool refresh = dirty_st;
+
+		if (refresh) {
+			init();
+		}
 	}
 
 	const std::vector<RE::Actor*>& actor_scanner_model::actors() {
@@ -180,7 +184,6 @@ namespace slavetats_ui {
 	}
 
 	void nioverride_model_t::init() {
-		// last_scan = std::chrono::steady_clock::now();
 		auto actor = actor_model->get_actor();
 		if (actor) {
 			actor_overrides_t tmp;
@@ -306,8 +309,6 @@ namespace slavetats_ui {
 	void slots_model_t::update() {
 		// Models must be up-to-date, before checking if they are dirty, otherwise status is inconsistent. And, even worse, I suspect,
 		// if the models would depend on each other, they would have to be updated in a certain order, or multiple times, before the dirty flags would be right.
-		//_applied_tattoos_model->update();
-		//_nioverride_model->update();
 
 		bool dirty_a = _applied_tattoos_model->test_and_clear_dirty(applied_tattoos_model_registered);
 		bool dirty_n = _nioverride_model->test_and_clear_dirty(nioverride_model_registered);

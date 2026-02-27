@@ -11,10 +11,6 @@ namespace slavetats_ui {
 		area_model_t* area_model;
 		nioverride_model_t* nioverride_model;
 		applied_tattoos_model_t* actor_tattoos_model;
-		//slots_model_t* slots_model;
-		//selected_slot_model_t* selected_slot_model;
-		//selected_section_model_t* selected_section_model;
-		//tattoo_in_section_model_t* tattoo_in_section_model;
 
 		win_inspector_models();
 		~win_inspector_models();
@@ -25,17 +21,9 @@ namespace slavetats_ui {
 		area_model = new area_model_t();
 		nioverride_model = new nioverride_model_t(actor_model);
 		actor_tattoos_model = new applied_tattoos_model_t(actor_model);
-		//slots_model = new slots_model_t(actor_tattoos_model, nioverride_model);
-		//selected_slot_model = new selected_slot_model_t(area_model, slots_model);
-		//selected_section_model = new selected_section_model_t(area_model);
-		//tattoo_in_section_model = new tattoo_in_section_model_t(area_model, selected_section_model);
 	}
 
 	win_inspector_models::~win_inspector_models() {
-		//delete tattoo_in_section_model;
-		//delete selected_section_model;
-		//delete selected_slot_model;
-		//delete slots_model;
 		delete actor_tattoos_model;
 		delete nioverride_model;
 		delete area_model;

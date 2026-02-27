@@ -1,7 +1,6 @@
 #include "jcontainers_wrapper.h"
 #include "slavetats_util.h"
 #include "tattoo_field_db.h"
-#include "slavetatsng_wrapper.h"
 
 namespace slavetats_ui {
 

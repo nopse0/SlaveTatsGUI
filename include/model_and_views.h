@@ -131,12 +131,12 @@ namespace slavetats_ui {
 	class actor_scanner_model : public clib_util::singleton::ISingleton<actor_scanner_model>
 	{
 	private:
+		slavetats_model_t::interest_handle slavetats_model_registered = 0;
 		std::vector<RE::Actor*> _actors;
 		std::vector<std::string> _actor_labels;
-		// std::chrono::time_point<std::chrono::steady_clock> last_scan;
-
 	public:
 		actor_scanner_model();
+		~actor_scanner_model();
 		void init();
 		void update();
 
@@ -204,7 +204,6 @@ namespace slavetats_ui {
 	private:
 		actor_model_t::interest_handle     actor_model_registered = 0;
 		slavetats_model_t::interest_handle slavetats_model_registered = 0;
-		// std::chrono::time_point<std::chrono::steady_clock> last_scan;
 
 		actor_model_t*                   actor_model;
 		std::optional<actor_overrides_t> _overrides;
